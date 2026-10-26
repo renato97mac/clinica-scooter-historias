@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>Conectar TikTok</title>
+<link rel="stylesheet" href="../estilo.css">
+</head>
+<body>
+<main>
+  <p class="marca">La Clínica del Scooter</p>
+  <h1>Conectar TikTok</h1>
+  <!-- TikTok vuelve aquí con ?code=…&state=… después de autorizar. La página no guarda ni envía nada:
+       solo muestra el código para pegarlo en la consola del taller (py -m historias tiktok). -->
+  <div class="tarjeta" id="ok" hidden>
+    <p><b>Listo, TikTok dio el permiso.</b> Copia este código y vuelve a la consola del taller. Ahí pulsa Enter: el
+      programa lo toma del portapapeles. El código vence en unos minutos.</p>
+    <span class="codigo" id="codigo"></span>
+    <button id="copiar" type="button">Copiar código</button>
+    <p class="nota" id="copiado" hidden>Copiado.</p>
+  </div>
+  <div class="tarjeta" id="mal" hidden>
+    <p><b>TikTok no dio el permiso.</b></p>
+    <p class="nota" id="error"></p>
+    <p>Vuelve a la consola del taller y empieza otra vez.</p>
+  </div>
+  <div class="tarjeta" id="nada" hidden>
+    <p>Esta página es la vuelta de la autorización de TikTok para la herramienta interna del taller. Si llegaste aquí
+      sin querer, puedes cerrarla.</p>
+    <p class="nota">This page receives the TikTok authorization for the workshop's in-house tool.
+      <a href="../index.html">More information</a>.</p>
+  </div>
+</main>
+<script>
+  "use strict";
+  const q = new URLSearchParams(location.search);
+  const codigo = q.get("code");
+  const estado = q.get("state") || "";
+  if (codigo) {
+    // el estado va pegado al código para que la consola compruebe que la vuelta corresponde a su pedido
+    const texto = codigo + "|" + estado;
+    document.getElementById("codigo").textContent = texto;
+    document.getElementById("ok").hidden = false;
+    document.getElementById("copiar").onclick = async () => {
+      try { await navigator.clipboard.writeText(texto); document.getElementById("copiado").hidden = false; }
+      catch (e) { getSelection().selectAllChildren(document.getElementById("codigo")); }
+    };
+    history.replaceState(null, "", location.pathname);   // que el código no quede en el historial
+  } else if (q.get("error")) {
+    document.getElementById("error").textContent = (q.get("error_description") || q.get("error")).slice(0, 300);
+    document.getElementById("mal").hidden = false;
+  } else {
+    document.getElementById("nada").hidden = false;
+  }
+</script>
+</body>
+</html>

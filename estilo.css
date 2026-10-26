@@ -1,0 +1,19 @@
+:root { --fondo: #f6f4f1; --texto: #1d1b19; --suave: #6b655e; --marca: #c8102e; --borde: #e4dfd8; --tarjeta: #fff; }
+@media (prefers-color-scheme: dark) {
+  :root { --fondo: #161514; --texto: #f1ede8; --suave: #a9a29a; --marca: #ff5468; --borde: #34302c; --tarjeta: #1f1d1b; }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--fondo); color: var(--texto); font: 16px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; }
+main { max-width: 760px; margin: 0 auto; padding: 32px 16px 64px; }
+.marca { color: var(--marca); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; font-size: 13px; margin: 0; }
+h1 { font-size: 30px; line-height: 1.2; margin: 6px 0 12px; }
+h2 { font-size: 20px; margin: 32px 0 8px; }
+p, li { color: var(--texto); }
+.nota { color: var(--suave); font-size: 14px; }
+.tarjeta { background: var(--tarjeta); border: 1px solid var(--borde); border-radius: 14px; padding: 20px; margin: 20px 0; }
+nav { display: flex; gap: 16px; flex-wrap: wrap; margin: 24px 0 0; font-size: 14px; }
+a { color: var(--marca); }
+code, .codigo { font-family: ui-monospace, Consolas, monospace; word-break: break-all; }
+.codigo { display: block; background: var(--fondo); border: 1px solid var(--borde); border-radius: 10px; padding: 14px; font-size: 15px; margin: 12px 0; }
+button { background: var(--marca); color: #fff; border: 0; border-radius: 10px; padding: 12px 18px; font-size: 16px; font-weight: 600; cursor: pointer; }
+hr { border: 0; border-top: 1px solid var(--borde); margin: 32px 0; }
