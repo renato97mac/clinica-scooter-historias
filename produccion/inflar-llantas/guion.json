@@ -1,0 +1,75 @@
+{
+  "titulo": "Cómo inflar bien las llantas de tu scooter",
+  "voz": "em_alex",
+  "velocidad": 1.04,
+  "pausa_entre_frases": 0.28,
+  "cierre_segundos": 3.4,
+  "notas": "Sintaxis: '|' corta la página de subtítulo, *palabra* = palabra clave (recuadro naranja), palabra{lectura} = cómo la lee la voz.",
+  "frases": [
+    {
+      "id": "gancho",
+      "texto": "¿Por qué tu scooter{escúter} | rinde menos | y se *pincha* tanto?"
+    },
+    {
+      "id": "causa",
+      "texto": "Mira la llanta: | casi siempre | es la *presión.*"
+    },
+    {
+      "id": "aplasta",
+      "texto": "Con poco aire, | la llanta se *aplasta,* | roza más el suelo | y gasta más *batería.*"
+    },
+    {
+      "id": "pellizco",
+      "texto": "Y en un hueco | o una vereda, | la cámara se *pellizca* | contra el aro."
+    },
+    {
+      "id": "cuanto",
+      "texto": "¿Cuánto aire? | Lo exacto | está en tu *manual.*"
+    },
+    {
+      "id": "rango",
+      "texto": "En muchos scooters{escúters} | urbanos, | entre *45{cuarenta y cinco} y 50{cincuenta} PSI.{pe ese i.}*"
+    },
+    {
+      "id": "maximo",
+      "texto": "Y nunca pases | el *máximo* | que viene escrito | en el costado."
+    },
+    {
+      "id": "frio",
+      "texto": "Mídela en *frío,* | antes de salir: | caliente | marca de más."
+    },
+    {
+      "id": "tapon",
+      "texto": "Quita el *tapón* | de la válvula. | Si no llegas, | usa una extensión."
+    },
+    {
+      "id": "cabezal",
+      "texto": "Encaja el cabezal | *recto,* | hasta el fondo, | y cierra la palanca."
+    },
+    {
+      "id": "error",
+      "texto": "Y el error | es el compresor | del *grifo:* | llena una llanta tan chica | en un segundo | y te pasas."
+    },
+    {
+      "id": "inflador",
+      "texto": "Mejor un inflador | con *manómetro.*"
+    },
+    {
+      "id": "reloj",
+      "texto": "Infla de a poquitos | mirando el reloj. | Cuando marque | tu *número,* | ya está."
+    },
+    {
+      "id": "semana",
+      "texto": "Pon el tapón | y revísala | cada *semana:* | el aire | se va solo."
+    },
+    {
+      "id": "cta",
+      "texto": "Sigue a La Clínica | del Scooter{escúter} | y aprende a *cuidar* | tu scooter.{escúter.}"
+    }
+  ],
+  "marca": {
+    "nombre": "La Clínica del Scooter",
+    "usuario": "laclinicadelscooter",
+    "bajada": "Taller de scooters · Lima"
+  }
+}

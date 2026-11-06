@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Motor de video</title>
+<style>
+  @font-face { font-family: "Poppins"; font-weight: 500; src: url("../node_modules/@fontsource/poppins/files/poppins-latin-500-normal.woff2") format("woff2"); }
+  @font-face { font-family: "Poppins"; font-weight: 600; src: url("../node_modules/@fontsource/poppins/files/poppins-latin-600-normal.woff2") format("woff2"); }
+  @font-face { font-family: "Poppins"; font-weight: 700; src: url("../node_modules/@fontsource/poppins/files/poppins-latin-700-normal.woff2") format("woff2"); }
+  @font-face { font-family: "Poppins"; font-weight: 800; src: url("../node_modules/@fontsource/poppins/files/poppins-latin-800-normal.woff2") format("woff2"); }
+
+  :root {
+    --fondo: #050608;
+    --cian: #3fd3df;
+    --rojo: #ff3b2f;
+    --naranja: #ff6a1f;
+    --blanco: #f4f6f8;
+    --gris-texto: rgba(235, 238, 242, 0.58);
+    --caja: rgba(8, 10, 13, 0.86);
+  }
+  html, body { margin: 0; padding: 0; background: var(--fondo); overflow: hidden; }
+  body { width: 1080px; height: 1920px; position: relative; font-family: "Poppins", sans-serif; color: var(--blanco); }
+  #lienzo { position: absolute; inset: 0; overflow: hidden; transform-origin: 50% 40%; }
+  #lienzo canvas { display: block; }
+  .capa { position: absolute; inset: 0; pointer-events: none; }
+  #vineta { background: radial-gradient(ellipse 85% 70% at 50% 48%, transparent 55%, rgba(0,0,0,0.55) 100%); }
+
+  /* Subtítulos karaoke */
+  #subs { position: absolute; left: 90px; right: 90px; top: 300px; text-align: center;
+          font-size: 54px; line-height: 1.32; font-weight: 500; letter-spacing: -0.2px;
+          text-shadow: 0 3px 18px rgba(0,0,0,0.75); }
+  #subs .p { color: var(--gris-texto); font-weight: 500; }
+  #subs .a { color: #fff; font-weight: 700; }
+  #subs .clave { position: relative; display: inline-block; padding: 0 8px; margin: 0 -2px; border: 3px solid var(--naranja);
+                 border-radius: 7px; background: rgba(255, 106, 31, 0.20); line-height: 1.15; }
+  #subs .clave span { color: #fff; font-weight: 700; }
+  #subs .clave::before, #subs .clave::after { content: ""; position: absolute; width: 13px; height: 13px; border-radius: 50%;
+                 background: var(--naranja); border: 2px solid #fff3ea; box-sizing: border-box; }
+  #subs .clave::before { left: -8px; top: -8px; }
+  #subs .clave::after { right: -8px; bottom: -8px; }
+
+  /* Rótulos anclados */
+  .rotulo { position: absolute; left: 0; top: 0; padding: 8px 18px 7px; border-radius: 8px; border: 3px solid var(--cian);
+            background: var(--caja); color: #fff; font-weight: 700; font-size: 31px; letter-spacing: 0.6px; white-space: nowrap;
+            text-transform: uppercase; box-shadow: 0 6px 24px rgba(0,0,0,0.45); }
+  .rotulo.rojo { border-color: var(--rojo); }
+  .rotulo.blanco { border-color: #e9edf1; }
+  .rotulo.chico { font-size: 22px; padding: 4px 12px; border-width: 2px; text-transform: none; font-weight: 600; letter-spacing: 0; }
+
+  /* Fichas de checklist */
+  .ficha { position: absolute; left: 96px; padding: 8px 18px; border-radius: 8px; border: 3px solid var(--cian);
+           background: var(--caja); font-weight: 700; font-size: 30px; letter-spacing: 0.5px; text-transform: uppercase; }
+  .ficha.mal { border-color: var(--rojo); }
+
+  /* Medidor de presión (HUD) */
+  #hud { position: absolute; left: 110px; right: 110px; top: 1180px; height: 150px; border-radius: 14px;
+         background: rgba(10, 12, 15, 0.82); border: 2px solid rgba(255,255,255,0.10); }
+  #hud .lectura { position: absolute; right: 26px; top: 16px; font-size: 44px; font-weight: 800; }
+  #hud .lectura small { font-size: 24px; font-weight: 600; margin-left: 6px; opacity: 0.8; }
+  #hud .nombre { position: absolute; left: 26px; top: 22px; font-size: 24px; font-weight: 700; letter-spacing: 1.5px; opacity: 0.75; }
+  #hud .pista { position: absolute; left: 26px; right: 26px; top: 92px; height: 22px; border-radius: 11px; background: rgba(255,255,255,0.08); overflow: hidden; }
+  #hud .banda { position: absolute; top: 0; bottom: 0; background: rgba(63, 211, 223, 0.35); border-left: 2px solid var(--cian); border-right: 2px solid var(--cian); }
+  #hud .relleno { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 11px; }
+  #hud .marcas { position: absolute; left: 26px; right: 26px; top: 118px; height: 24px; font-size: 18px; opacity: 0.55; }
+  #hud .marcas span { position: absolute; transform: translateX(-50%); }
+
+  /* Esquemas 2D */
+  #esquema { background: var(--fondo); }
+
+  /* Cierre */
+  #perfil { position: absolute; left: 50%; top: 1390px; transform: translateX(-50%); display: flex; align-items: center; gap: 18px;
+            font-size: 30px; font-weight: 700; }
+  #perfil .avatar { width: 64px; height: 64px; border-radius: 50%; border: 3px solid var(--naranja); background: #0b0d10;
+                    display: grid; place-items: center; font-size: 26px; font-weight: 800; color: var(--naranja); }
+  #perfil .seguir { padding: 8px 22px; border-radius: 10px; background: var(--rojo); font-size: 26px; }
+  #logo { position: absolute; inset: 0; background: #0a0b0f; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  #logo .marca { font-size: 92px; font-weight: 800; line-height: 1.0; letter-spacing: -1px; text-align: center; }
+  #logo .marca em { font-style: normal; color: var(--naranja); }
+  #logo .bajada { margin-top: 26px; font-size: 34px; font-weight: 600; letter-spacing: 6px; color: var(--cian); text-transform: uppercase; }
+  #logo .usuario { margin-top: 70px; padding: 14px 34px; border-radius: 40px; border: 3px solid rgba(255,255,255,0.18); font-size: 36px; font-weight: 600; }
+  #logo .linea { width: 0; height: 6px; margin-top: 30px; border-radius: 3px; background: linear-gradient(90deg, var(--cian), #fff 50%, var(--rojo)); }
+</style>
+<script type="importmap">
+{ "imports": { "three": "../node_modules/three/build/three.module.js", "three/addons/": "../node_modules/three/examples/jsm/" } }
+</script>
+</head>
+<body>
+  <div id="lienzo"></div>
+  <div id="vineta" class="capa"></div>
+  <svg id="esquema" class="capa" viewBox="0 0 1080 1920" width="1080" height="1920" style="display:none"></svg>
+  <svg id="lineas" class="capa" viewBox="0 0 1080 1920" width="1080" height="1920"></svg>
+  <div id="rotulos" class="capa"></div>
+  <div id="fichas" class="capa"></div>
+  <div id="hud" style="display:none">
+    <div class="nombre">PRESIÓN</div>
+    <div class="lectura"><span class="valor">0</span><small>PSI</small></div>
+    <div class="pista"><div class="banda"></div><div class="relleno"></div></div>
+    <div class="marcas"></div>
+  </div>
+  <div id="perfil" style="display:none"></div>
+  <div id="subs"></div>
+  <div id="logo" style="display:none"></div>
+  <script type="module" src="motor.js"></script>
+</body>
+</html>

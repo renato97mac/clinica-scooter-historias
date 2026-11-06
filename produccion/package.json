@@ -1,0 +1,13 @@
+{
+  "name": "clinica-videos",
+  "private": true,
+  "type": "module",
+  "description": "Motor de videos explicativos 3D de La Clínica del Scooter",
+  "scripts": {
+    "render": "node motor/render.mjs"
+  },
+  "dependencies": {
+    "three": "0.160.0",
+    "@fontsource/poppins": "5.0.8"
+  }
+}
