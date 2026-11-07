@@ -109,8 +109,18 @@ def tiempos_palabras(palabras, audio, sr):
         segmentos.append((t0, a, w0, idx))
         t0, w0 = b, idx + 1
     segmentos.append((t0, dur - 0.03, w0, len(palabras) - 1))
+    # Validación: cada tramo debe tener un ritmo posible (entre 0,07 y 0,45 s por sílaba).
+    # Si una pausa se ancló en el lugar equivocado, se descartan las anclas.
+    def ritmo_ok(ini, fin, a, b):
+        sil = sum(silabas(palabras[i]["lectura"]) for i in range(a, b + 1))
+        return 0.07 <= (fin - ini) / sil <= 0.45
+    if anclas and not all(ritmo_ok(*s) for s in segmentos):
+        anclas = []
+        segmentos = [(0.03, dur - 0.03, 0, len(palabras) - 1)]
     for ini, fin, a, b in segmentos:
-        pesos = [silabas(palabras[i]["lectura"]) + 0.6 for i in range(a, b + 1)]
+        # Sin anclas, la puntuación suma un peso de pausa
+        pesos = [silabas(palabras[i]["lectura"]) + 0.6 + (1.4 if not anclas and i < b and palabras[i]["lectura"].endswith(PUNTUACION_PAUSA) else 0)
+                 for i in range(a, b + 1)]
         total = sum(pesos)
         t = ini
         for i, peso in zip(range(a, b + 1), pesos):
@@ -118,7 +128,7 @@ def tiempos_palabras(palabras, audio, sr):
             palabras[i]["inicio"] = round(t, 3)
             palabras[i]["fin"] = round(t + d, 3)
             t += d
-    return len(anclas) == len(cortes)
+    return bool(anclas) and len(anclas) == len(cortes)
 
 
 def main():

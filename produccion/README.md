@@ -112,10 +112,14 @@ produccion/
 │   ├── guion.json      texto, voz, velocidad, marca
 │   ├── escena.js       modelos 3D, planos, rótulos y animaciones (sincronizados con T('frase','palabra'))
 │   └── inflar-llantas.mp4
-└── ajustar-freno/      video 2: por qué tu scooter frena tarde, ajuste del freno de disco (56 s)
-    ├── guion.json
-    ├── escena.js       usa motor/kit.js + disco, pinza mecánica, maneta, regulador, llave Allen
-    └── ajustar-freno.mp4
+├── ajustar-freno/      video 2: frena tarde → ajuste del freno de DISCO (scooters tipo Xiaomi M365) (56 s)
+│   ├── guion.json
+│   ├── escena.js       usa motor/kit.js (estilo clásico) + disco, pinza mecánica, regulador, llave Allen
+│   └── ajustar-freno.mp4
+└── freno-tambor/       video 3: frena tarde → ajuste del freno de TAMBOR (scooters tipo Max, 10") (54 s)
+    ├── guion.json      pasos validados por el taller
+    ├── escena.js       usa kit.crearScooterMax(): tambor, brazo, resorte, tuerca del cable, llave fija
+    └── freno-tambor.mp4
 ```
 
 ### Requisitos
@@ -135,6 +139,7 @@ El render toma unos 20–25 min por minuto de video en CPU, sin GPU. Con GPU es 
 ### Hacer otro video
 Copiar `ajustar-freno/` (es el que usa el kit) a una carpeta nueva, reescribir `guion.json`, generar la voz y adaptar `escena.js`. Los tiempos se escriben como `T('id_frase', 'palabra')`, así que si cambia la locución todo se vuelve a sincronizar solo.
 
+- Hay dos estilos de scooter: `kit.crearScooter()` (clásico: ruedas de 8,5" con cámara y freno de disco trasero, tipo Xiaomi M365) y `kit.crearScooterMax()` (ruedas de 10" tubeless con franja amarilla, plataforma gris con puntos, guardabarros con reflector redondo y freno de tambor delantero, parecido al scooter del taller). Elegir el que corresponda a la falla que se explica.
 - `kit.crearScooter()` devuelve el scooter completo con sus ruedas (`delantera`, `trasera`, cada una con `giro` para hacerla girar). `raiz.rotation.z` levanta la rueda trasera.
 - `kit.luces.modo('error')` tiñe la escena de rojo; `kit.luces.modo('normal')` la devuelve al cian.
 - El medidor se configura por entrada: `{ nombre, unidad, max, marcas, banda: [min, max], valor: (t) => número }`. En el video de llantas mide PSI; en el de frenos, el % de recorrido de la maneta.
