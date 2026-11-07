@@ -1,6 +1,7 @@
 // Renderiza un video cuadro por cuadro con Chromium (Playwright) y lo codifica con ffmpeg.
 // Uso: node motor/render.mjs <carpeta-video> [--fps 30] [--desde 0] [--hasta fin] [--escala 1] [--salida ruta.mp4]
 //      node motor/render.mjs <carpeta-video> --master --salida ruta.mov   (máster ProRes 422 HQ para edición)
+//      node motor/render.mjs <carpeta-video> --png --crf 12 --salida ruta.mp4  (MP4 de alta calidad)
 //      node motor/render.mjs <carpeta-video> --cuadros 1.5,12,30   (solo capturas PNG de prueba)
 import { createRequire } from 'node:module';
 import { spawn } from 'node:child_process';
@@ -54,15 +55,19 @@ if (cuadros) {
   // --master: cuadros PNG sin pérdida → Apple ProRes 422 HQ (10 bits 4:2:2) + audio PCM 24 bits (.mov)
   // por defecto: cuadros JPEG → H.264 para publicar (.mp4)
   const master = args.includes('--master');
-  const entradaVideo = master
+  // --crf N: calidad del MP4 (17 = publicar; 12 = alta calidad para edición). Con --png los cuadros no se comprimen.
+  const crf = Number(opcion('crf', 17));
+  const png = master || args.includes('--png');
+  const entradaVideo = png
     ? ['-f', 'image2pipe', '-framerate', String(fps), '-c:v', 'png', '-i', '-']
     : ['-f', 'image2pipe', '-framerate', String(fps), '-c:v', 'mjpeg', '-i', '-'];
   const codificacion = master
     ? ['-c:v', 'prores_ks', '-profile:v', '3', '-vendor', 'apl0', '-bits_per_mb', '8000', '-pix_fmt', 'yuv422p10le',
        '-color_primaries', 'bt709', '-color_trc', 'bt709', '-colorspace', 'bt709', '-r', String(fps),
        '-c:a', 'pcm_s24le', '-ac', '2']
-    : ['-c:v', 'libx264', '-preset', 'slow', '-crf', '17', '-pix_fmt', 'yuv420p', '-profile:v', 'high', '-r', String(fps),
-       '-c:a', 'aac', '-b:a', '192k', '-movflags', '+faststart'];
+    : ['-c:v', 'libx264', '-preset', 'slow', '-crf', String(crf), '-pix_fmt', 'yuv420p', '-profile:v', 'high', '-r', String(fps),
+       '-color_primaries', 'bt709', '-color_trc', 'bt709', '-colorspace', 'bt709',
+       '-c:a', 'aac', '-b:a', crf <= 14 ? '320k' : '192k', '-movflags', '+faststart'];
   const ff = spawn('ffmpeg', ['-y', '-v', 'error', ...entradaVideo,
     '-ss', String(desde), '-t', String(hasta - desde), '-i', voz,
     '-filter_complex', '[1:a]aresample=48000:resampler=soxr,apad[a]', '-map', '0:v', '-map', '[a]', '-shortest',
@@ -71,7 +76,7 @@ if (cuadros) {
   for (let i = 0; i < total; i++) {
     const t = desde + i / fps;
     await pagina.evaluate((x) => window.dibujar(x), t);
-    const cuadro = await pagina.screenshot(master ? { type: 'png' } : { type: 'jpeg', quality: 95 });
+    const cuadro = await pagina.screenshot(png ? { type: 'png' } : { type: 'jpeg', quality: 95 });
     if (!ff.stdin.write(cuadro)) await new Promise((r) => ff.stdin.once('drain', r));
     if (i % 30 === 0) {
       const s = (Date.now() - inicio) / 1000;
