@@ -209,29 +209,39 @@ function dibujarFichas(t) {
   }
 }
 
-// ---------- Medidor de presión ----------
+// ---------- Medidor (HUD) ----------
+// Cada entrada de programa.hud puede definir: nombre, unidad, max, marcas, banda [min,max], tolerancia.
+// Por defecto es el medidor de presión (0–80 PSI) del primer video.
 const hud = document.getElementById('hud');
-const HUD_MAX = 80;
-hud.querySelector('.marcas').innerHTML = [0, 20, 40, 60, 80].map((v) => `<span style="left:${(v / HUD_MAX) * 100}%">${v}</span>`).join('');
+let marcasActuales = '';
 function dibujarHud(t) {
   const h = (programa.hud || []).find((x) => t >= x.desde && t < x.hasta + 0.2);
   if (!h) { hud.style.display = 'none'; return; }
+  const max = h.max ?? 80;
+  const marcas = h.marcas ?? [0, 20, 40, 60, 80];
+  const clave = `${max}|${marcas.join(',')}`;
+  if (clave !== marcasActuales) {
+    hud.querySelector('.marcas').innerHTML = marcas.map((v) => `<span style="left:${(v / max) * 100}%">${v}</span>`).join('');
+    marcasActuales = clave;
+  }
   const valor = h.valor(t);
   const op = Math.min(progreso(t, h.desde, h.desde + 0.2), 1 - progreso(t, h.hasta, h.hasta + 0.2));
   const [b0, b1] = h.banda || [45, 50];
+  const tolerancia = h.tolerancia ?? 8;
   const enBanda = valor >= b0 - 0.5 && valor <= b1 + 0.5;
-  const color = enBanda ? 'var(--cian)' : (valor < b0 - 8 || valor > b1 + 8) ? 'var(--rojo)' : '#e9edf1';
+  const color = enBanda ? 'var(--cian)' : (valor < b0 - tolerancia || valor > b1 + tolerancia) ? 'var(--rojo)' : '#e9edf1';
   hud.style.display = 'block';
   hud.style.opacity = op;
   hud.querySelector('.valor').textContent = Math.round(valor);
   hud.querySelector('.valor').style.color = color;
+  hud.querySelector('.lectura small').textContent = h.unidad ?? 'PSI';
   hud.querySelector('.nombre').textContent = h.nombre || 'PRESIÓN';
   const banda = hud.querySelector('.banda');
   banda.style.display = h.mostrarBanda === false ? 'none' : 'block';
-  banda.style.left = `${(b0 / HUD_MAX) * 100}%`;
-  banda.style.width = `${((b1 - b0) / HUD_MAX) * 100}%`;
+  banda.style.left = `${(b0 / max) * 100}%`;
+  banda.style.width = `${((b1 - b0) / max) * 100}%`;
   const relleno = hud.querySelector('.relleno');
-  relleno.style.width = `${limitar(valor / HUD_MAX) * 100}%`;
+  relleno.style.width = `${limitar(valor / max) * 100}%`;
   relleno.style.background = color;
 }
 

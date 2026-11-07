@@ -105,12 +105,17 @@ produccion/
 ├── motor/
 │   ├── voz.py          locución (Kokoro TTS, local) + tiempos de cada palabra
 │   ├── pagina.html     lienzo 3D + capas: subtítulos, rótulos, fichas, medidor, esquemas, cierre
-│   ├── motor.js        cámara por planos, karaoke, rótulos anclados en 3D, efectos (bloom)
+│   ├── motor.js        cámara por planos, karaoke, rótulos anclados en 3D, medidor, efectos (bloom)
+│   ├── kit.js          piezas reutilizables: materiales, luces, piso, ruedas y scooter completo
 │   └── render.mjs      Chromium cuadro por cuadro → ffmpeg (H.264 1080×1920 30 fps + AAC)
-└── inflar-llantas/     el primer video
-    ├── guion.json      texto, voz, velocidad, marca
-    ├── escena.js       modelos 3D, planos, rótulos y animaciones (sincronizados con T('frase','palabra'))
-    └── inflar-llantas.mp4
+├── inflar-llantas/     video 1: cómo inflar bien las llantas (58 s)
+│   ├── guion.json      texto, voz, velocidad, marca
+│   ├── escena.js       modelos 3D, planos, rótulos y animaciones (sincronizados con T('frase','palabra'))
+│   └── inflar-llantas.mp4
+└── ajustar-freno/      video 2: por qué tu scooter frena tarde, ajuste del freno de disco (56 s)
+    ├── guion.json
+    ├── escena.js       usa motor/kit.js + disco, pinza mecánica, maneta, regulador, llave Allen
+    └── ajustar-freno.mp4
 ```
 
 ### Requisitos
@@ -128,14 +133,18 @@ node motor/render.mjs inflar-llantas                             # video complet
 El render toma unos 20–25 min por minuto de video en CPU, sin GPU. Con GPU es mucho más rápido.
 
 ### Hacer otro video
-Copiar `inflar-llantas/` a una carpeta nueva, reescribir `guion.json`, generar la voz y adaptar `escena.js`. Los tiempos se escriben como `T('id_frase', 'palabra')`, así que si cambia la locución todo se vuelve a sincronizar solo.
+Copiar `ajustar-freno/` (es el que usa el kit) a una carpeta nueva, reescribir `guion.json`, generar la voz y adaptar `escena.js`. Los tiempos se escriben como `T('id_frase', 'palabra')`, así que si cambia la locución todo se vuelve a sincronizar solo.
+
+- `kit.crearScooter()` devuelve el scooter completo con sus ruedas (`delantera`, `trasera`, cada una con `giro` para hacerla girar). `raiz.rotation.z` levanta la rueda trasera.
+- `kit.luces.modo('error')` tiñe la escena de rojo; `kit.luces.modo('normal')` la devuelve al cian.
+- El medidor se configura por entrada: `{ nombre, unidad, max, marcas, banda: [min, max], valor: (t) => número }`. En el video de llantas mide PSI; en el de frenos, el % de recorrido de la maneta.
 
 ### Mejoras recomendadas
 - **Voz:** Kokoro es una voz sintética neutra. Para que suene peruana y natural, conviene grabar la voz real de alguien del taller (o usar una voz neural de pago) y pasar el audio por `voz.py` con un alineador (por ejemplo WhisperX) para obtener los tiempos de cada palabra.
 - **3D:** los modelos están hechos con piezas simples. Si el taller tiene o encarga modelos `.glb` de un scooter real, se cargan en `escena.js` con `GLTFLoader` y el resto del motor no cambia.
 
 ## 6. Próximos videos sugeridos (misma fórmula)
-1. **«¿Por qué tu scooter frena mal?»:** ajustar el cable del freno de disco (holgura de la maneta, tuerca de tensión; criterio: la rueda gira libre y frena antes de la mitad del recorrido).
+1. ~~**«¿Por qué tu scooter frena tarde?»:** ajustar el cable del freno de disco~~ → hecho en `ajustar-freno/`.
 2. **«¿Por qué chirría tu freno?»:** pastillas cristalizadas o disco con grasa (límite: pastilla con menos de 1,5 mm → se cambia).
 3. **«¿Por qué tu scooter tiene juego en el poste?»:** apretar el mecanismo de plegado (error: apretar de más).
 4. **«¿Cuánto dura tu batería?»:** cargas, frío y calor, guardarlo al 50–80 %.
