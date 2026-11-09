@@ -153,7 +153,7 @@ export async function crear(ctx) {
     { desde: T('trabe', 'trabe'), hasta: T('trabe', 'o', -0.1), texto: 'Aprieta el freno', color: 'rojo', ancla: anclaManeta, caja: [220, 160] },
     { desde: T('trabe', 'puno'), hasta: T('trabe', 'fin', 0.25), texto: 'Puño corrido', color: 'rojo', ancla: anclaPuño, caja: [120, -300] },
     { desde: T('trabe', 'aprieta'), hasta: T('trabe', 'fin', 0.25), texto: 'Aprieta el acelerador', color: 'rojo', ancla: anclaAcel, caja: [160, 300] },
-    { desde: T('cambiar', 'acelerador', 0.4), hasta: T('cambiar', 'fin', 0.25), texto: 'Acelerador nuevo', ancla: anclaNuevo, caja: [-120, -330] },
+    { desde: T('cambiar', 'acelerador', 0.4), hasta: T('cambiar', 'fin', 0.25), texto: 'Acelerador nuevo', ancla: anclaNuevo, caja: [180, 260] },
     // Esquema de los mandos y el motor (anclas en pantalla)
     { desde: T('peligro', 'acelerando'), hasta: T('peligro', 'o', -0.05), texto: 'Frenas… y sigue acelerando', color: 'rojo', linea: false, ancla: { pantalla: [540, 1480] }, caja: [0, 0] },
     { desde: T('peligro', 'frenarse'), hasta: T('accidente', null, -0.22), texto: 'Aceleras… y se frena de golpe', color: 'rojo', linea: false, ancla: { pantalla: [540, 1480] }, caja: [0, 0] },
