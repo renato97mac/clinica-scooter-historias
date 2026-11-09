@@ -83,7 +83,7 @@ export async function crear(ctx) {
     { desde: T('porque', 'roza'), hasta: T('porque', 'fin', 0.2), texto: 'Buje', ancla: { pantalla: [700, 1130] }, caja: [150, 330] },
     { desde: T('porque', 'metal'), hasta: T('porque', 'fin', 0.2), texto: 'Metal con metal', color: 'rojo', ancla: { pantalla: [655, 940] }, caja: [80, -330] },
     { desde: T('desgaste', 'bocinas'), hasta: T('desgaste', 'casquillos', -0.05), texto: 'Bocinas', color: 'rojo', ancla: anclaBuje, caja: [-180, 300] },
-    { desde: T('desgaste', 'casquillos'), hasta: T('desgaste', 'fin', 0.3), texto: 'Casquillos de bronce', color: 'rojo', ancla: anclaBuje, caja: [-120, 300] },
+    { desde: T('desgaste', 'casquillos'), hasta: T('desgaste', 'fin', 0.3), texto: 'Casquillos de bronce', color: 'rojo', ancla: anclaBuje, caja: [200, 300] },
     { desde: T('desgaste', 'bronce', 0.1), hasta: T('desgaste', 'fin', 0.3), texto: 'Holgura', color: 'rojo', ancla: anclaBasculante, caja: [-60, -330] },
     { desde: T('desmonta', 'pasadores'), hasta: T('desmonta', 'fin', 0.25), texto: 'Perno del pasador', ancla: anclaPerno, caja: [-170, -320] },
     { desde: T('engrasa', 'engrasalos'), hasta: T('engrasa', 'fin', 0.25), texto: 'Grasa espesa', ancla: anclaGrasa, caja: [-150, 320] },
