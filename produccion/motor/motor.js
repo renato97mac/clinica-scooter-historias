@@ -259,9 +259,67 @@ const lienzo = document.getElementById('lienzo');
 const perfil = document.getElementById('perfil');
 const logo = document.getElementById('logo');
 const marca = guion.marca || { nombre: 'La Clínica del Scooter', usuario: 'laclinicadelscooter' };
-perfil.innerHTML = `<div class="avatar">LC</div><div>${marca.usuario}</div><div class="seguir">Seguir</div>`;
-logo.innerHTML = `<div class="marca">LA CLÍNICA<br><em>DEL SCOOTER</em></div><div class="linea"></div>` +
-  `<div class="bajada">${marca.bajada || 'Taller de scooters eléctricos'}</div><div class="usuario">@${marca.usuario}</div>`;
+// Estilo de cierre: 'logo' (placa con el logo del taller, entrada con glitch; por defecto) o 'texto'.
+const cierreLogo = (marca.cierre || 'logo') === 'logo';
+perfil.innerHTML = (cierreLogo ? '<img class="avatar" src="marca/avatar.png" alt="">' : '<div class="avatar">LC</div>') +
+  `<div>${marca.usuario}</div><div class="seguir">Seguir</div>`;
+if (cierreLogo) {
+  logo.classList.add('imagen');
+} else {
+  logo.innerHTML = `<div class="marca">LA CLÍNICA<br><em>DEL SCOOTER</em></div><div class="linea"></div>` +
+    `<div class="bajada">${marca.bajada || 'Taller de scooters eléctricos'}</div><div class="usuario">@${marca.usuario}</div>`;
+}
+// Capa de glitch: franjas del logo desplazadas, código binario y destello
+const glitch = document.getElementById('glitch');
+const N_FRANJAS = 9;
+glitch.innerHTML = Array.from({ length: N_FRANJAS }, () => '<div class="franja"></div>').join('') +
+  Array.from({ length: 7 }, () => '<div class="binario"></div>').join('') + '<div class="flash"></div>';
+const franjas = [...glitch.querySelectorAll('.franja')];
+const binarios = [...glitch.querySelectorAll('.binario')];
+const flash = glitch.querySelector('.flash');
+const azar = (a, b = 0) => { const x = Math.sin(a * 127.1 + b * 311.7) * 43758.5453; return x - Math.floor(x); };
+const DUR_GLITCH = 0.5;
+function dibujarGlitch(t, t0) {
+  const k = (t - t0) / DUR_GLITCH;
+  if (k < 0 || k > 1) { glitch.style.display = 'none'; lienzo.style.filter = 'none'; return; }
+  glitch.style.display = 'block';
+  const cuadro = Math.round(t * 30);
+  const fuerza = k < 0.55 ? 1 : 1 - (k - 0.55) / 0.45;
+  // 1) La escena se rompe: separación RGB y temblor
+  const sep = 14 * fuerza;
+  lienzo.style.filter = k < 0.45 ? `drop-shadow(${sep}px 0 rgba(255,0,70,0.85)) drop-shadow(${-sep}px 0 rgba(0,255,230,0.85))` : 'none';
+  // 2) Franjas del logo con desplazamiento horizontal (aparecen desde la mitad)
+  const verLogo = k >= 0.3;
+  franjas.forEach((f, i) => {
+    f.style.display = verLogo ? 'block' : 'none';
+    if (!verLogo) return;
+    const y0 = (i / N_FRANJAS) * 100, y1 = 100 - ((i + 1) / N_FRANJAS) * 100;
+    f.style.clipPath = `inset(${y0}% 0 ${y1}% 0)`;
+    const dx = (azar(cuadro, i) - 0.5) * 260 * fuerza;
+    f.style.transform = `translateX(${dx}px)`;
+    const s2 = 10 * fuerza;
+    f.style.filter = `drop-shadow(${s2}px 0 rgba(255,0,70,0.8)) drop-shadow(${-s2}px 0 rgba(0,255,230,0.8))`;
+  });
+  // 3) Código binario sobre la pantalla
+  binarios.forEach((b, i) => {
+    const visible = k < 0.75 && azar(cuadro, i + 50) < 0.8;
+    b.style.display = visible ? 'block' : 'none';
+    if (!visible) return;
+    const filas = 2 + Math.floor(azar(cuadro, i + 7) * 4);
+    let txt = '';
+    for (let r = 0; r < filas; r++) {
+      let fila = '';
+      for (let c = 0; c < 14; c++) fila += azar(cuadro + r, c + i * 13) < 0.5 ? '0' : '1';
+      txt += (azar(cuadro, r + i) < 0.15 ? 'Error ' : '') + fila + '\n';
+    }
+    b.textContent = txt;
+    b.style.left = `${azar(cuadro, i + 20) * 760}px`;
+    b.style.top = `${azar(cuadro, i + 30) * 1800}px`;
+    b.style.color = azar(cuadro, i + 40) < 0.5 ? '#ff2bd6' : '#3dff9a';
+  });
+  // 4) Destello blanco breve justo antes de que aparezca el logo
+  flash.style.opacity = k > 0.22 && k < 0.36 ? 0.9 : 0;
+}
 function dibujarCierre(t) {
   const c = programa.cierre;
   if (!c) return;
@@ -275,6 +333,14 @@ function dibujarCierre(t) {
     perfil.style.opacity = progreso(t, c.telefono + 0.4, c.telefono + 0.8);
   } else {
     lienzo.style.transform = 'none'; lienzo.style.outline = 'none'; perfil.style.display = 'none';
+  }
+  if (cierreLogo) {
+    dibujarGlitch(t, c.logo);
+    const visible = t >= c.logo + DUR_GLITCH;
+    logo.style.display = visible ? 'block' : 'none';
+    logo.style.opacity = 1;
+    logo.style.transform = visible ? `scale(${1 + 0.035 * progreso(t, c.logo + DUR_GLITCH, tiempos.duracion, (x) => x)})` : 'none';
+    return;
   }
   if (t >= c.logo) {
     logo.style.display = 'flex';
@@ -309,5 +375,7 @@ function dibujarRotulosEsquema(t) {
   rotulos.splice(0, rotulos.length, ...guardados);
 }
 
+// Precarga de las imágenes de marca (cierre y avatar) para que estén listas en el primer cuadro
+await Promise.all(['marca/logo-cierre.png', 'marca/avatar.png'].map((src) => { const i = new Image(); i.src = src; return i.decode().catch(() => {}); }));
 window.duracion = tiempos.duracion;
 window.listo = true;

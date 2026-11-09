@@ -1,0 +1,27 @@
+{
+  "titulo": "¿Tu scooter marca error 14 o 15? Qué significan y qué hacer",
+  "voz": "em_alex",
+  "velocidad": 1.1,
+  "pausa_entre_frases": 0.25,
+  "cierre_segundos": 2.4,
+  "notas": "Significados y pasos validados por el taller (scooters tipo Ninebot). Sintaxis: '|' corta la página de subtítulo, *palabra* = palabra clave, palabra{lectura} = cómo la lee la voz.",
+  "marca": {
+    "nombre": "La Clínica del Scooter",
+    "usuario": "laclinicadelscooter",
+    "bajada": "Taller de scooters · Lima",
+    "cierre": "logo"
+  },
+  "frases": [
+    { "id": "gancho",   "texto": "¿Tu scooter{escúter} | marca *error 14{catorce}* | o *15?{quince?}*" },
+    { "id": "causa",    "texto": "Los dos | tienen que ver | con los *mandos* | del manubrio: | el acelerador | y el freno." },
+    { "id": "e14",      "texto": "El *14{catorce}* | es el acelerador: | no vuelve a cero | o tiene una falla." },
+    { "id": "e15",      "texto": "El *15{quince}* | es la maneta de freno: | su sensor | no vuelve a cero | o falla." },
+    { "id": "apaga",    "texto": "Primero, | *apaga* el scooter.{escúter.}" },
+    { "id": "mover",    "texto": "Suelta el acelerador | y las manetas, | y muévelos varias veces: | tienen que volver | *solos* | a su lugar." },
+    { "id": "trabe",    "texto": "Revisa que nada | los *trabe:* | un cable, | un accesorio | o una bolsa | colgada del manubrio." },
+    { "id": "enciende", "texto": "Vuelve a *encender:* | si el código se fue, | listo." },
+    { "id": "taller",   "texto": "Si sigue, | el cable | o el sensor | están dañados: | eso se revisa | en el *taller.*" },
+    { "id": "calle",    "texto": "Y no salgas así: | un acelerador | o un freno | que fallan | no son para la *calle.*" },
+    { "id": "cta",      "texto": "Sigue a La Clínica | del Scooter{escúter} | y aprende a *arreglar* | tu scooter.{escúter.}" }
+  ]
+}

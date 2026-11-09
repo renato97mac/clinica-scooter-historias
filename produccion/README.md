@@ -116,7 +116,8 @@ produccion/
 │   ├── guion.json
 │   ├── escena.js       usa motor/kit.js (estilo clásico) + disco, pinza mecánica, regulador, llave Allen
 │   └── ajustar-freno.mp4
-└── freno-tambor/       video 3: frena tarde → ajuste del freno de TAMBOR (scooters tipo Max, 10") (54 s)
+├── codigos-error/      video 4: errores 14 y 15 (acelerador y sensor de freno), tipo Ninebot (44 s)
+├── freno-tambor/       video 3: frena tarde → ajuste del freno de TAMBOR (scooters tipo Max, 10") (54 s)
     ├── guion.json      pasos validados por el taller
     ├── escena.js       usa kit.crearScooterMax(): tambor, brazo, resorte, tuerca del cable, llave fija
     └── freno-tambor.mp4
@@ -148,7 +149,20 @@ Copiar `ajustar-freno/` (es el que usa el kit) a una carpeta nueva, reescribir `
 - **Voz:** Kokoro es una voz sintética neutra. Para que suene peruana y natural, conviene grabar la voz real de alguien del taller (o usar una voz neural de pago) y pasar el audio por `voz.py` con un alineador (por ejemplo WhisperX) para obtener los tiempos de cada palabra.
 - **3D:** los modelos están hechos con piezas simples. Si el taller tiene o encarga modelos `.glb` de un scooter real, se cargan en `escena.js` con `GLTFLoader` y el resto del motor no cambia.
 
-## 6. Próximos videos sugeridos (misma fórmula)
+## 6. Ajustes de edición de Heily (aplicados desde el video 4)
+Heily editó el video del freno de tambor y esos cambios quedan como estándar:
+
+| Cambio | Cómo queda en el motor |
+|---|---|
+| Ritmo ~10 % más rápido | `"velocidad": 1.1` y `"pausa_entre_frases": 0.25` en el guion |
+| Música de fondo | **La agrega Heily** en TikTok/CapCut (no se descarga música desde el motor) |
+| Logo del taller en el avatar del perfil | `motor/marca/avatar.png` |
+| Cierre con glitch → placa roja con la mascota | `"cierre": "logo"` (por defecto). Glitch de 0,5 s: separación RGB, franjas desplazadas, código binario y destello blanco; luego `motor/marca/logo-cierre.png` |
+| Cierre corto | `"cierre_segundos": 2.4` |
+
+`"cierre": "texto"` vuelve a la placa de texto anterior. El logo se extrajo del video de Heily (576×1024 escalado); si llega el archivo original, basta con reemplazar los dos PNG de `motor/marca/`.
+
+## 7. Próximos videos sugeridos (misma fórmula)
 1. ~~**«¿Por qué tu scooter frena tarde?»:** ajustar el cable del freno de disco~~ → hecho en `ajustar-freno/`.
 2. **«¿Por qué chirría tu freno?»:** pastillas cristalizadas o disco con grasa (límite: pastilla con menos de 1,5 mm → se cambia).
 3. **«¿Por qué tu scooter tiene juego en el poste?»:** apretar el mecanismo de plegado (error: apretar de más).

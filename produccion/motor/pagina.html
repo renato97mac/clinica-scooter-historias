@@ -70,6 +70,7 @@
   /* Cierre */
   #perfil { position: absolute; left: 50%; top: 1390px; transform: translateX(-50%); display: flex; align-items: center; gap: 18px;
             font-size: 30px; font-weight: 700; }
+  #perfil img.avatar { width: 70px; height: 70px; border-radius: 50%; border: 3px solid #fff; object-fit: cover; }
   #perfil .avatar { width: 64px; height: 64px; border-radius: 50%; border: 3px solid var(--naranja); background: #0b0d10;
                     display: grid; place-items: center; font-size: 26px; font-weight: 800; color: var(--naranja); }
   #perfil .seguir { padding: 8px 22px; border-radius: 10px; background: var(--rojo); font-size: 26px; }
@@ -78,6 +79,11 @@
   #logo .marca em { font-style: normal; color: var(--naranja); }
   #logo .bajada { margin-top: 26px; font-size: 34px; font-weight: 600; letter-spacing: 6px; color: var(--cian); text-transform: uppercase; }
   #logo .usuario { margin-top: 70px; padding: 14px 34px; border-radius: 40px; border: 3px solid rgba(255,255,255,0.18); font-size: 36px; font-weight: 600; }
+  #logo.imagen { background: #b3120f url("marca/logo-cierre.png") center / cover no-repeat; }
+  #glitch { overflow: hidden; }
+  #glitch .franja { position: absolute; left: 0; width: 1080px; height: 1920px; top: 0; background: url("marca/logo-cierre.png") center / cover no-repeat; }
+  #glitch .binario { position: absolute; font-family: "DejaVu Sans Mono", monospace; font-size: 26px; font-weight: 700; white-space: pre; letter-spacing: 2px; }
+  #glitch .flash { position: absolute; inset: 0; background: #fff; }
   #logo .linea { width: 0; height: 6px; margin-top: 30px; border-radius: 3px; background: linear-gradient(90deg, var(--cian), #fff 50%, var(--rojo)); }
 </style>
 <script type="importmap">
@@ -100,6 +106,7 @@
   <div id="perfil" style="display:none"></div>
   <div id="subs"></div>
   <div id="logo" style="display:none"></div>
+  <div id="glitch" class="capa" style="display:none"></div>
   <script type="module" src="motor.js"></script>
 </body>
 </html>
