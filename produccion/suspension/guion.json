@@ -26,11 +26,7 @@
     },
     {
       "id": "desgaste",
-      "texto": "Primero, | revisa el *desgaste* | a la vista."
-    },
-    {
-      "id": "mucho",
-      "texto": "Si ya tiene | mucho juego, | tráelo al *taller.*"
+      "texto": "Primero, | revisa el *desgaste* | de las bocinas | y los casquillos | de bronce."
     },
     {
       "id": "desmonta",
@@ -42,7 +38,7 @@
     },
     {
       "id": "arandela",
-      "texto": "Al cerrar, | pon una *arandela* | o un espaciador: | compensa el desgaste | del metal | y sujeta mejor."
+      "texto": "Al cerrar, | pon una *arandela* | o un espaciador: | disimula el desgaste | y sigue funcionando | sin chirridos | ni holguras."
     },
     {
       "id": "fijador",

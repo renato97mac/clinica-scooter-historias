@@ -57,7 +57,7 @@ export async function crear(ctx) {
     { t: T('causa'), corte: true, de: { pos: mas(P, [0.09, 0.06, 0.26]), mira: mas(P, [0, 0, 0.05]), fov: 30 }, a: { pos: mas(P, [0.07, 0.05, 0.22]), mira: mas(P, [0, 0, 0.05]), fov: 30 } },
     { t: T('porque'), corte: true, de: { pos: mas(P, [0.07, 0.05, 0.22]), mira: P, fov: 30 } },
     { t: T('desgaste'), corte: true, de: { pos: mas(P, [0.05, 0.045, 0.19]), mira: mas(P, [0, 0, 0.065]), fov: 30 }, a: { pos: mas(P, [0.04, 0.04, 0.17]), mira: mas(P, [0, 0, 0.068]), fov: 30 } },
-    { t: T('mucho'), de: { pos: mas(P, [0.14, 0.07, 0.32]), mira: mas(P, [0.01, 0, 0.02]), fov: 30 }, a: { pos: mas(P, [0.13, 0.065, 0.3]), mira: mas(P, [0.01, 0, 0.02]), fov: 30 }, transicion: 0.8 },
+    { t: T('desgaste', 'casquillos', -0.2), de: { pos: mas(P, [0.14, 0.07, 0.32]), mira: mas(P, [0.01, 0, 0.02]), fov: 30 }, a: { pos: mas(P, [0.13, 0.065, 0.3]), mira: mas(P, [0.01, 0, 0.02]), fov: 30 }, transicion: 0.8 },
     { t: T('desmonta'), corte: true, de: { pos: mas(P, [0.24, 0.11, 0.34]), mira: mas(P, [0, 0.02, 0.1]), fov: 30 }, a: { pos: mas(P, [0.22, 0.1, 0.32]), mira: mas(P, [0, 0.025, 0.11]), fov: 30 } },
     { t: T('engrasa'), corte: true, de: { pos: mas(PF, [0.05, 0.05, 0.2]), mira: PF, fov: 30 }, a: { pos: mas(PF, [0.04, 0.045, 0.18]), mira: PF, fov: 30 } },
     { t: T('arandela'), corte: true, de: { pos: mas(P, [0.2, 0.09, 0.3]), mira: mas(P, [0, 0.01, 0.06]), fov: 30 }, a: { pos: mas(P, [0.16, 0.075, 0.25]), mira: mas(P, [0, 0.005, 0.07]), fov: 30 } },
@@ -82,13 +82,14 @@ export async function crear(ctx) {
     { desde: T('porque', 'roza'), hasta: T('porque', 'fin', 0.2), texto: 'Pasador', ancla: { pantalla: [540, 1060] }, caja: [-260, -380] },
     { desde: T('porque', 'roza'), hasta: T('porque', 'fin', 0.2), texto: 'Buje', ancla: { pantalla: [700, 1130] }, caja: [150, 330] },
     { desde: T('porque', 'metal'), hasta: T('porque', 'fin', 0.2), texto: 'Metal con metal', color: 'rojo', ancla: { pantalla: [655, 940] }, caja: [80, -330] },
-    { desde: T('desgaste', 'desgaste'), hasta: T('desgaste', 'fin', 0.25), texto: 'Desgaste', color: 'rojo', ancla: anclaBuje, caja: [-180, 300] },
-    { desde: T('mucho', 'juego'), hasta: T('mucho', 'traelo', -0.05), texto: 'Juego', color: 'rojo', ancla: anclaBasculante, caja: [-150, 300] },
-    { desde: T('mucho', 'traelo'), hasta: T('mucho', 'fin', 0.25), texto: 'Al taller', color: 'rojo', ancla: anclaBasculante, caja: [-150, 300] },
+    { desde: T('desgaste', 'bocinas'), hasta: T('desgaste', 'casquillos', -0.05), texto: 'Bocinas', color: 'rojo', ancla: anclaBuje, caja: [-180, 300] },
+    { desde: T('desgaste', 'casquillos'), hasta: T('desgaste', 'fin', 0.3), texto: 'Casquillos de bronce', color: 'rojo', ancla: anclaBuje, caja: [-120, 300] },
+    { desde: T('desgaste', 'bronce', 0.1), hasta: T('desgaste', 'fin', 0.3), texto: 'Holgura', color: 'rojo', ancla: anclaBasculante, caja: [-60, -330] },
     { desde: T('desmonta', 'pasadores'), hasta: T('desmonta', 'fin', 0.25), texto: 'Perno del pasador', ancla: anclaPerno, caja: [-170, -320] },
     { desde: T('engrasa', 'engrasalos'), hasta: T('engrasa', 'fin', 0.25), texto: 'Grasa espesa', ancla: anclaGrasa, caja: [-150, 320] },
-    { desde: T('arandela', 'arandela'), hasta: T('arandela', 'compensa', -0.05), texto: 'Arandela', ancla: anclaArandela, caja: [-160, 300] },
-    { desde: T('arandela', 'compensa'), hasta: T('arandela', 'fin', 0.25), texto: 'Compensa el desgaste', color: 'blanco', ancla: anclaArandela, caja: [-140, 300] },
+    { desde: T('arandela', 'arandela'), hasta: T('arandela', 'disimula', -0.05), texto: 'Arandela', ancla: anclaArandela, caja: [-160, 300] },
+    { desde: T('arandela', 'disimula'), hasta: T('arandela', 'sin', -0.05), texto: 'Disimula el desgaste', color: 'blanco', ancla: anclaArandela, caja: [-140, 300] },
+    { desde: T('arandela', 'sin'), hasta: T('arandela', 'fin', 0.25), texto: 'Sin holguras', ancla: anclaArandela, caja: [-140, 300] },
     { desde: T('fijador', 'fijador'), hasta: T('fijador', 'aprieta', -0.05), texto: 'Fijador', ancla: anclaFijador, caja: [140, 300] },
     { desde: T('fijador', 'aprieta'), hasta: T('fijador', 'fin', 0.3), texto: 'Aprieta', color: 'blanco', ancla: anclaFijador, caja: [140, 300] },
     { desde: T('listo', 'ruido'), hasta: T('listo', 'fin', 0.3), texto: 'Sin ruido', ancla: anclaPasador, caja: [-150, -330] },
@@ -156,7 +157,7 @@ export async function crear(ctx) {
   function actualizar(t) {
     fijarSuspension(compresion(t));
     // Juego lateral del basculante (bujes gastados)
-    basculante.position.z = t >= T('mucho') && t < T('desmonta') ? 0.0025 * Math.sin(t * 22) * progreso(t, T('mucho', 'juego', -0.1), T('mucho', 'juego', 0.2)) : 0;
+    basculante.position.z = t >= T('desgaste', 'casquillos') && t < T('desmonta') ? 0.0025 * Math.sin(t * 22) * progreso(t, T('desgaste', 'casquillos'), T('desgaste', 'casquillos', 0.3)) : 0;
 
     // Perno: sale en línea recta y luego gira a horizontal; vuelve al cerrar
     const e = estadoPerno(t);
