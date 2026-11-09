@@ -1,0 +1,60 @@
+{
+  "titulo": "¿Tu suspensión chirría? Cómo eliminar el chirrido de los pasadores",
+  "voz": "em_alex",
+  "velocidad": 1.1,
+  "pausa_entre_frases": 0.25,
+  "cierre_segundos": 2.4,
+  "notas": "Procedimiento dictado por el taller. Sintaxis: '|' corta la página de subtítulo, *palabra* = palabra clave, palabra{lectura} = cómo la lee la voz.",
+  "marca": {
+    "nombre": "La Clínica del Scooter",
+    "usuario": "laclinicadelscooter",
+    "bajada": "Taller de scooters · Lima",
+    "cierre": "logo"
+  },
+  "frases": [
+    {
+      "id": "gancho",
+      "texto": "¿Tu scooter{escúter} | *chirría* | en cada bache?"
+    },
+    {
+      "id": "causa",
+      "texto": "Casi siempre | son los *pasadores* | de la suspensión: | el punto | donde bascula."
+    },
+    {
+      "id": "porque",
+      "texto": "Ahí roza | metal con metal: | sin grasa, | se gasta | y *chirría.*"
+    },
+    {
+      "id": "desgaste",
+      "texto": "Primero, | revisa el *desgaste* | a la vista."
+    },
+    {
+      "id": "mucho",
+      "texto": "Si ya tiene | mucho juego, | tráelo al *taller.*"
+    },
+    {
+      "id": "desmonta",
+      "texto": "Luego, | *desmonta* | para llegar | a los pasadores."
+    },
+    {
+      "id": "engrasa",
+      "texto": "Ábrelos, | límpialos | y *engrásalos* | con una grasa | espesa | y de alto rendimiento."
+    },
+    {
+      "id": "arandela",
+      "texto": "Al cerrar, | pon una *arandela* | o un espaciador: | compensa el desgaste | del metal | y sujeta mejor."
+    },
+    {
+      "id": "fijador",
+      "texto": "A los pernos, | ponles *fijador* | tipo Loctite,{lóctait,} | y aprieta."
+    },
+    {
+      "id": "listo",
+      "texto": "Sin juego | y sin ruido: | *listo.*"
+    },
+    {
+      "id": "cta",
+      "texto": "Sigue a La Clínica | del Scooter{escúter} | y aprende a *arreglar* | tu scooter.{escúter.}"
+    }
+  ]
+}

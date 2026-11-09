@@ -283,7 +283,7 @@ export function crearKit({ THREE, escena, utiles }) {
    * o 'delantera' (raiz.rotation.z < 0 levanta la trasera).
    * Freno de tambor en la rueda delantera, lado izquierdo del conductor (-z), con maneta a la izquierda.
    */
-  function crearScooterMax({ pivote = 'trasera' } = {}) {
+  function crearScooterMax({ pivote = 'trasera', suspension = false } = {}) {
     const XD = 0.46, XT = -0.46;
     const raiz = new THREE.Group();
     const px = pivote === 'trasera' ? XT : XD;
@@ -332,10 +332,13 @@ export function crearKit({ THREE, escena, utiles }) {
     scooter.add(abrazaderaPlegado);
     const cima = V(0.33, 1.16, 0);
     scooter.add(tubo(cabeza, cima, 0.024, mat.grisCuerpo));
+    // Con suspensión, las piernas de la horquilla terminan en el pivote del basculante
+    const PIV = V(0.405, R_EXT_MAX + 0.045, 0);
     for (const z of [-0.064, 0.064]) {
-      const pierna = new THREE.Mesh(new RoundedBoxGeometry(0.03, 0.24, 0.014, 2, 0.006), mat.grisCuerpo);
-      const a = V(0.425, 0.3, z), b = V(XD, R_EXT_MAX, z);
+      const pierna = new THREE.Mesh(new RoundedBoxGeometry(0.03, 1, 0.014, 2, 0.006), mat.grisCuerpo);
+      const a = V(0.425, 0.3, z), b = suspension ? V(PIV.x, PIV.y, z) : V(XD, R_EXT_MAX, z);
       pierna.position.copy(a).lerp(b, 0.5);
+      pierna.scale.y = a.distanceTo(b) + 0.02;
       pierna.rotation.z = Math.atan2(b.x - a.x, a.y - b.y);
       scooter.add(pierna);
     }
@@ -417,7 +420,84 @@ export function crearKit({ THREE, escena, utiles }) {
     const fijarManeta = (r) => { maneta.rotation.y = 0.2 * limitar(r, 0, 1.05); };
     const B = V(BARRA.x + 0.03, BARRA.y - 0.012, -0.132);
 
-    return { raiz, scooter, delantera, trasera, manubrio, puños, pantallaLuz, tambor, brazo, extremoBrazo, TOPE, PIVOTE_BRAZO, ANG_BRAZO, LARGO_BRAZO: LARGO, maneta, fijarManeta, B, XD, XT, R: R_EXT_MAX };
+    const resultado = { raiz, scooter, delantera, trasera, manubrio, puños, pantallaLuz, tambor, brazo, extremoBrazo, TOPE, PIVOTE_BRAZO, ANG_BRAZO, LARGO_BRAZO: LARGO, maneta, fijarManeta, B, XD, XT, R: R_EXT_MAX };
+    if (suspension) Object.assign(resultado, crearSuspension({ scooter, delantera, tambor, PIV, XD }));
+    return resultado;
+  }
+
+  // ---- Suspensión delantera con basculante (lado +z visible): pasador con perno y tuerca, amortiguador de resorte ----
+  function crearSuspension({ scooter, delantera, tambor, PIV, XD, ladoAmortiguador = -1 }) {
+    const basculante = new THREE.Group();
+    basculante.position.copy(PIV);
+    scooter.add(basculante);
+    // La rueda y el tambor cuelgan del basculante
+    const eje = V(XD, R_EXT_MAX, 0).sub(PIV);
+    basculante.add(delantera.grupo);
+    delantera.grupo.position.copy(eje);
+    basculante.add(tambor);
+    tambor.position.set(eje.x, eje.y, -0.036);
+    // Placas del basculante (una por lado)
+    const largo = eje.length();
+    const ang = Math.atan2(eje.y, eje.x);
+    for (const z of [-0.064, 0.064]) {
+      const placa = new THREE.Mesh(new RoundedBoxGeometry(largo + 0.03, 0.026, 0.01, 2, 0.005), mat.aluOscuro);
+      placa.position.set(eje.x / 2, eje.y / 2, z);
+      placa.rotation.z = ang;
+      basculante.add(placa);
+    }
+    // Pasador: perno pasante con cabeza (+z) y tuerca (-z); buje de bronce visible entre la pierna y la placa
+    const pasador = new THREE.Group();
+    pasador.position.copy(PIV);
+    scooter.add(pasador);
+    const perno = new THREE.Group();
+    const vastago = cilindroZ(0.0055, 0.17, mat.acero, 24);
+    const cabeza = cilindroZ(0.0105, 0.006, mat.cromo, 6);
+    cabeza.position.z = 0.083;
+    perno.add(vastago, cabeza);
+    pasador.add(perno);
+    const tuerca = cilindroZ(0.0105, 0.007, mat.cromo, 6);
+    tuerca.position.z = -0.083;
+    pasador.add(tuerca);
+    const bujes = [];
+    for (const z of [-0.0715, 0.0715]) {
+      const buje = cilindroZ(0.0085, 0.004, mat.laton, 24);
+      buje.position.z = z;
+      pasador.add(buje);
+      bujes.push(buje);
+    }
+    // Amortiguador: anclaje superior en la pierna (+z), inferior en el basculante
+    const SUP = V(0.43, 0.27, ladoAmortiguador * 0.08);
+    const INF_LOCAL = V(eje.x * 0.62, eje.y * 0.62 + 0.012, ladoAmortiguador * 0.08);
+    const puntosResorte = [];
+    for (let i = 0; i <= 300; i++) { const k = i / 300, a = k * Math.PI * 2 * 8; puntosResorte.push(V(Math.cos(a) * 0.009, k - 0.5, Math.sin(a) * 0.009)); }
+    const resorte = new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(puntosResorte), 600, 0.0016, 8), new THREE.MeshStandardMaterial({ color: 0xd84a1b, metalness: 0.6, roughness: 0.35, envMapIntensity: 0.5 }));
+    const cuerpoAmort = new THREE.Mesh(new THREE.CylinderGeometry(0.0062, 0.0062, 1, 20), mat.aluOscuro);
+    const vastagoAmort = new THREE.Mesh(new THREE.CylinderGeometry(0.003, 0.003, 1, 12), mat.cromo);
+    const ojoSup = cilindroZ(0.008, 0.01, mat.aluOscuro, 20);
+    ojoSup.position.copy(SUP);
+    const ojoInf = cilindroZ(0.008, 0.01, mat.aluOscuro, 20);
+    scooter.add(resorte, cuerpoAmort, vastagoAmort, ojoSup, ojoInf);
+    const alinear = (malla, a, b) => {
+      const d = new THREE.Vector3().subVectors(b, a);
+      malla.position.copy(a).addScaledVector(d, 0.5);
+      malla.scale.set(1, d.length(), 1);
+      malla.quaternion.setFromUnitVectors(V(0, 1, 0), d.normalize());
+    };
+    const inf = V();
+    /** Compresión 0..1: gira el basculante y estira/comprime el amortiguador. */
+    const fijarSuspension = (c) => {
+      basculante.rotation.z = 0.22 * limitar(c, -0.2, 1.2);
+      basculante.updateMatrix();
+      inf.copy(INF_LOCAL).applyMatrix4(basculante.matrix);
+      inf.z = SUP.z;
+      ojoInf.position.copy(inf);
+      alinear(resorte, SUP.clone().add(V(0, -0.012, 0).applyAxisAngle(V(0, 0, 1), 0)), inf.clone());
+      const medio = SUP.clone().lerp(inf, 0.45);
+      alinear(cuerpoAmort, SUP, medio);
+      alinear(vastagoAmort, medio, inf);
+    };
+    fijarSuspension(0);
+    return { basculante, pasador, perno, tuerca, bujes, fijarSuspension, PIV, SUP };
   }
 
   return { V, mat, lienzo, texSombra, halo, luces, piso, tubo, cilindroZ, crearRueda, crearScooter, crearRuedaMax, crearScooterMax, R_EXT, R_EXT_MAX, RoundedBoxGeometry };
