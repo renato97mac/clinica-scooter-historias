@@ -149,7 +149,7 @@ export async function crear(ctx) {
   const anclaPinza = enMundo(pinza, [0, 0, 0.014]);
   const anclaDisco = enMundo(trasera.grupo, [0.035, 0.03, 0.04]);
   const anclaMarca = () => marca.localToWorld(V(0, 0, 0));
-  const anclaHerr = () => herramienta.localToWorld(V(0.07, 0, 0.005));
+  const anclaHerr = () => herramienta.localToWorld(V(0.018, 0, 0.008));
   const rotulos = [
     { desde: 0.3, hasta: T('causa', null, -0.05), texto: 'Roce a golpes', color: 'rojo', ancla: anclaPinza, caja: [140, -280] },
     { desde: T('causa', 'doblado'), hasta: T('prueba', null, -0.05), texto: 'Disco doblado', color: 'rojo', ancla: anclaDisco, caja: [-60, 420] },
@@ -158,11 +158,11 @@ export async function crear(ctx) {
     { desde: T('pinza', 'pinza'), hasta: T('pinza', 'fin', 0.25), texto: 'Parejo: es la pinza', color: 'blanco', ancla: anclaPinza, caja: [140, -280] },
     { desde: T('seguridad', 'rajado'), hasta: T('seguridad', 'no', -0.05), texto: 'Rajado', color: 'rojo', ancla: { pantalla: [610, 1000] }, caja: [120, -330] },
     { desde: T('seguridad', 'no'), hasta: T('seguridad', 'fin', 0.25), texto: 'Se cambia', color: 'rojo', ancla: { pantalla: [610, 1000] }, caja: [120, -330] },
-    { desde: T('marcar', 'roza'), hasta: T('herramienta', 'fuera', -0.1), texto: 'Aquí roza', color: 'rojo', ancla: anclaMarca, caja: [-150, -300] },
-    { desde: T('herramienta', 'pinza'), hasta: T('herramienta', 'encaja', -0.05), texto: 'Fuera de la pinza', color: 'blanco', ancla: anclaMarca, caja: [-150, -300] },
-    { desde: T('herramienta', 'enderezadora'), hasta: T('error', 'fuerza', -0.05), texto: 'Enderezadora', ancla: anclaHerr, caja: [-100, 300] },
-    { desde: T('error', 'fuerza'), hasta: T('error', 'dobla', -0.05), texto: 'Sin fuerza', color: 'rojo', ancla: anclaHerr, caja: [-100, 300] },
-    { desde: T('error', 'dobla'), hasta: T('error', 'fin', 0.25), texto: 'Muy poco · contrario al roce', color: 'blanco', ancla: anclaHerr, caja: [-60, 300] },
+    { desde: T('marcar', 'roza'), hasta: T('herramienta', 'fuera', -0.1), texto: 'Aquí roza', color: 'rojo', ancla: anclaMarca, caja: [220, -260] },
+    { desde: T('herramienta', 'pinza'), hasta: T('herramienta', 'encaja', -0.05), texto: 'Fuera de la pinza', color: 'blanco', ancla: anclaMarca, caja: [200, -260] },
+    { desde: T('herramienta', 'enderezadora'), hasta: T('error', 'fuerza', -0.05), texto: 'Enderezadora', ancla: anclaHerr, caja: [220, 230] },
+    { desde: T('error', 'fuerza'), hasta: T('error', 'dobla', -0.05), texto: 'Sin fuerza', color: 'rojo', ancla: anclaHerr, caja: [220, 230] },
+    { desde: T('error', 'dobla'), hasta: T('error', 'fin', 0.25), texto: 'Muy poco · contrario al roce', color: 'blanco', ancla: anclaHerr, caja: [120, 230] },
     // Esquema de la tarjeta (pantalla)
     { desde: T('criterio', 'tarjeta'), hasta: T('criterio', 'fin', 0.25), texto: 'Tarjeta', color: 'blanco', ancla: { pantalla: [610, 1060] }, caja: [210, 160] },
     { desde: T('taller', 'taller'), hasta: T('taller', 'fin', 0.3), texto: 'Taller en Lima', ancla: enMundo(scooter, [-0.02, 0.16, 0.06]), caja: [-60, 260] },
