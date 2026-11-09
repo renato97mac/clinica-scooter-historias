@@ -137,9 +137,9 @@ export async function crear(ctx) {
     { desde: T('trabe', 'bolsa'), hasta: T('trabe', 'fin', 0.25), texto: 'Bolsa colgada', color: 'rojo', ancla: anclaBolsa, caja: [-150, 260] },
     { desde: T('trabe', 'trabe'), hasta: T('trabe', 'fin', 0.25), texto: 'Aprieta el freno', color: 'rojo', ancla: anclaManeta, caja: [-120, -300] },
     // Esquema del cableado (anclas en pantalla)
-    { desde: T('taller', 'cable'), hasta: T('taller', 'fin', 0.2), texto: 'Cable', color: 'rojo', ancla: { pantalla: [525, 1020] }, caja: [160, -150] },
-    { desde: T('taller', 'sensor'), hasta: T('taller', 'fin', 0.2), texto: 'Sensor', color: 'rojo', ancla: { pantalla: [410, 1310] }, caja: [60, 220] },
-    { desde: T('taller', 'taller'), hasta: T('taller', 'fin', 0.25), texto: 'Se revisa en el taller', color: 'rojo', ancla: { pantalla: [760, 1170] }, caja: [-120, 320] },
+    { desde: T('taller', 'cable'), hasta: T('calle', null, -0.22), texto: 'Cable', color: 'rojo', ancla: { pantalla: [525, 1020] }, caja: [160, -150] },
+    { desde: T('taller', 'sensor'), hasta: T('calle', null, -0.22), texto: 'Sensor', color: 'rojo', ancla: { pantalla: [410, 1310] }, caja: [60, 220] },
+    { desde: T('taller', 'taller'), hasta: T('calle', null, -0.22), texto: 'Se revisa en el taller', color: 'rojo', ancla: { pantalla: [760, 1170] }, caja: [-120, 320] },
   ];
 
   const fichas = [
