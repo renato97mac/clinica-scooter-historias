@@ -1,0 +1,63 @@
+{
+  "titulo": "¿Por qué tu scooter frena tarde? Cómo ajustar el freno de disco",
+  "voz": "em_alex",
+  "velocidad": 1.0,
+  "pausa_entre_frases": 0.34,
+  "cierre_segundos": 4.0,
+  "notas": "Sintaxis: '|' corta la página de subtítulo, *palabra* = palabra clave (recuadro naranja), palabra{lectura} = cómo la lee la voz.",
+  "marca": {
+    "nombre": "La Clínica del Scooter",
+    "usuario": "laclinicadelscooter",
+    "bajada": "Taller de scooters · Lima"
+  },
+  "frases": [
+    {
+      "id": "gancho",
+      "texto": "¿Por qué tu scooter{escúter} | frena cada vez | más *tarde?*"
+    },
+    {
+      "id": "causa",
+      "texto": "Casi siempre | es el *cable* | del freno, | que se estira | con el uso."
+    },
+    {
+      "id": "prueba",
+      "texto": "Aprieta la maneta | parado: | si casi | toca el *puño,* | hay que tensarlo."
+    },
+    {
+      "id": "seguridad",
+      "texto": "Pero antes, | mira la pastilla: | si ya casi | no tiene material, | no se ajusta: | se *cambia.*"
+    },
+    {
+      "id": "prep",
+      "texto": "Si está bien: | scooter{escúter} apagado, | rueda levantada | y una llave *Allen.{álen.}*"
+    },
+    {
+      "id": "regulador",
+      "texto": "Primero, | el ajuste fino: | gira el *regulador* | de la maneta | hacia afuera, | media vuelta | a la vez."
+    },
+    {
+      "id": "pinza",
+      "texto": "Si ya no da más, | ve a la *pinza.* | Afloja el perno | que sujeta el cable, | jálalo unos milímetros | y vuelve a apretar."
+    },
+    {
+      "id": "error",
+      "texto": "Y el error | es tensar | *de más:* | el freno queda rozando, | se calienta | y gasta batería."
+    },
+    {
+      "id": "criterio",
+      "texto": "Gira la rueda: | tiene que ir *libre,* | y con la maneta | a la mitad, | frenar firme."
+    },
+    {
+      "id": "verif",
+      "texto": "Antes de salir, | pruébalo despacio | en un lugar *seguro.*"
+    },
+    {
+      "id": "taller",
+      "texto": "Y si aun así | frena mal, | tráelo al *taller.*"
+    },
+    {
+      "id": "cta",
+      "texto": "Sigue a La Clínica | del Scooter{escúter} | y aprende a *arreglar* | tu scooter.{escúter.}"
+    }
+  ]
+}

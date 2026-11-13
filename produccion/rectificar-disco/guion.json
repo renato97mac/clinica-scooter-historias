@@ -1,0 +1,30 @@
+{
+  "titulo": "¿Tu freno roza a golpes? Cómo rectificar el disco doblado",
+  "voz": "em_alex",
+  "velocidad": 1.1,
+  "pausa_entre_frases": 0.25,
+  "cierre_segundos": 2.4,
+  "notas": "Procedimiento según el video de ejemplo aprobado por el taller (enderezar/rectificar disco doblado). Sintaxis: '|' corta la página de subtítulo, *palabra* = palabra clave, palabra{lectura} = cómo la lee la voz.",
+  "marca": {
+    "nombre": "La Clínica del Scooter",
+    "usuario": "laclinicadelscooter",
+    "bajada": "Taller de scooters · Lima",
+    "cierre": "logo"
+  },
+  "frases": [
+    { "id": "gancho",    "texto": "¿Tu freno | roza a *golpes* | en cada vuelta?" },
+    { "id": "causa",     "texto": "Casi siempre | el disco | está *doblado.*" },
+    { "id": "prueba",    "texto": "Levanta la rueda | y gírala con la mano: | si roza | en un solo *punto* | de la vuelta, | es el disco." },
+    { "id": "pinza",     "texto": "Si roza parejo, | es la *pinza:* | eso es otro ajuste." },
+    { "id": "seguridad", "texto": "Si el disco | está *rajado* | o muy torcido, | no se rectifica: | se cambia." },
+    { "id": "prep",      "texto": "Si no: | scooter{escúter} apagado, | disco *frío* | y dedos sin grasa." },
+    { "id": "marcar",    "texto": "Gira despacio | y *marca* | dónde roza." },
+    { "id": "herramienta","texto": "Lleva esa marca | fuera de la pinza | y encaja ahí | la *enderezadora* | de discos." },
+    { "id": "error",     "texto": "Y el error | es hacer *fuerza:* | dobla muy poquito, | hacia el lado contrario | al roce." },
+    { "id": "repite",    "texto": "Gira, | revisa | y *repite.*" },
+    { "id": "criterio",  "texto": "Cuando el disco | baile menos | que el grosor | de una *tarjeta,* | listo." },
+    { "id": "verif",     "texto": "Prueba el freno | despacio | antes de salir." },
+    { "id": "taller",    "texto": "¿No tienes | la herramienta? | Tráelo al *taller.*" },
+    { "id": "cta",       "texto": "Sigue a La Clínica | del Scooter{escúter} | y aprende a *arreglar* | tu scooter.{escúter.}" }
+  ]
+}
